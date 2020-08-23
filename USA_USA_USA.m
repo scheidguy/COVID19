@@ -53,13 +53,24 @@ web([url caseFile], '-browser');
 web([url deathFile], '-browser');
 web([url2 testFile], '-browser');
 web([url3 RTfile], '-browser');
-% wait_a_sec = msgbox('Downloading some data. Wait a sec then click OK');
-% uiwait(wait_a_sec);
+wait_a_sec = msgbox('Downloading some data. Wait a sec then click OK');
+uiwait(wait_a_sec);
 
 dataLoc = 'C:\Users\schei\Downloads\';
 mainDir = 'C:\Users\schei\OneDrive\Documents\MATLAB\COVID\';
 newLoc = [mainDir 'data\'];
 
+%Put deaths in perspective with other disastrous events
+benghazi = 4;
+titanic = 1517;
+katrina = 1836;
+pearl = 2467;
+nine11 = 2996;
+gettysburg = 3155;
+lung = 135720 / 12;
+flu = sum(1000 * [37 12 43 38 51 23 38 61 34.157]) / 9;
+heart = 647000 / 12;
+hiroshima = 75000;
 
 %Extract the pertinent data from COVID-Projections RT model
 infectionLength = 15;  %Average duration in days of COVID-19
@@ -415,7 +426,6 @@ for currCounty = 1:dimensions(1)
         deathsInd = strcmp(previousState, RTstateArray);
         RTdeaths = theRTs{deathsInd};
         
-        %theFig = figure('WindowState', 'fullscreen');
         theFig = tiledlayout(2, 2 , 'TileSpacing', 'Compact');
         title(theFig, ['COVID-19 Stats for the Great State of ' ...
             previousState], 'FontSize', 16);
@@ -486,7 +496,11 @@ for currCounty = 1:dimensions(1)
         set(gcf, 'Position', get(0, 'Screensize'));
         exportgraphics(gcf, ...
             [mainDir '\jpgs\' previousState '\_STATEWIDE.jpg']);
-        savefig([mainDir '\figs\' previousState '\_STATEWIDE.fig']);
+        savefig([mainDir '\figs\' previousState '\_STATEWIDE).fig']);
+        movefile([mainDir '\jpgs\' previousState '\_STATEWIDE.jpg'], ...
+            [mainDir '\jpgs\' previousState '\(STATEWIDE).jpg']);
+        movefile([mainDir '\figs\' previousState '\_STATEWIDE.fig'], ...
+            [mainDir '\figs\' previousState '\(STATEWIDE).fig']);
         close all;
         
         %Update beginning index for the new state
@@ -506,7 +520,7 @@ for currCounty = 1:dimensions(1)
     if ~isempty(unallocatedIndex) || ~makeFigsFlag || ~makeCountyFigsFlag
         continue
     end
-    figure; grid on; hold on;
+    figure('Visible', 'off'); grid on; hold on;
     plot((1:currDay)+offsetDays, casesPerDay(currCounty,:));
     plot((1:currDay)+offsetDays, deaths(currCounty,:), 'LineWidth', 3);
     plot((1:currDay)+offsetDays, cases7day(currCounty,:), 'LineWidth', 3);
@@ -532,7 +546,7 @@ end
 
 if makeFigsFlag
     %Create national plots
-    figure; grid on; hold on;
+    figure('Visible', 'off'); grid on; hold on;
     plot((1:currDay)+offsetDays, sum(casesPerDay));
     plot((1:currDay)+offsetDays, sum(deaths), 'LineWidth', 3);
     plot((1:currDay)+offsetDays, sum(cases7day), 'LineWidth', 3);
@@ -549,7 +563,7 @@ if makeFigsFlag
     savefig([mainDir '\figs\NATIONWIDE_CASES.fig']);
     exportgraphics(gcf, [mainDir '\jpgs\NATIONWIDE_CASES.jpg']);
     
-    figure; grid on; hold on;
+    figure('Visible', 'off'); grid on; hold on;
     plot((1:currDay)+offsetDays, sum(deathsPerDay));
     plot((1:currDay)+offsetDays, sum(deaths7day), 'LineWidth', 3);
     xlabel('Days Since 2020 Began');
@@ -561,19 +575,8 @@ if makeFigsFlag
     savefig([mainDir '\figs\NATIONWIDE_DEATHS.fig']);
     exportgraphics(gcf, [mainDir '\jpgs\NATIONWIDE_DEATHS.jpg']);
     
-    %Put deaths in perspective with other disastrous events
-    benghazi = 4;
-    titanic = 1517;
-    katrina = 1836;
-    pearl = 2467;
-    nine11 = 2996;
-    gettysburg = 3155;
-    lung = 135720 / 12;
-    flu = sum(1000 * [37 12 43 38 51 23 38 61 34.157]) / 9;
-    heart = 647000 / 12;
-    hiroshima = 75000;
-    
-    figure; grid on; hold on;
+    %Put deaths in perspective with other disastrous events  
+    figure('Visible', 'off'); grid on; hold on;
     plot((1:currDay)+offsetDays, sum(deaths) / benghazi, 'LineWidth', 3);
     plot((1:currDay)+offsetDays, sum(deaths) / titanic, 'LineWidth', 3);
     plot((1:currDay)+offsetDays, sum(deaths) / katrina, 'LineWidth', 3);
@@ -584,17 +587,28 @@ if makeFigsFlag
     plot((1:currDay)+offsetDays, sum(deaths) / flu, 'LineWidth', 3);
     plot((1:currDay)+offsetDays, sum(deaths) / hiroshima, 'LineWidth', 3);
     numBenghazis = floor(max(sum(deaths) / benghazi));
-    numFluYears = round(max(sum(deaths) / flu), 2);
-    numHiroshimas = round(max(sum(deaths) / hiroshima), 2);
+    numTitanics = round(max(sum(deaths) / titanic));
+    numKatrinas = round(max(sum(deaths) / katrina));
+    numPearls = round(max(sum(deaths) / pearl));
+    numNines = round(max(sum(deaths) / nine11));
+    numGettys = round(max(sum(deaths) / gettysburg));
+    numLungs = round(max(sum(deaths) / lung));
+    numFluYears = round(max(sum(deaths) / flu), 1);
+    numHiroshimas = round(max(sum(deaths) / hiroshima), 1);
+    
     xlabel('Days Since 2020 Began');
     ylabel('Number of Events');
     ylim([0 round(max(sum(deaths) / titanic), -1)]);
-    title('COVID-19 Deaths Comparison for the United States of America');
-    legend(['Benghazis: ' num2str(numBenghazis) ' so far'], ...
-        'Titanics', 'Hurricane Katrinas', 'Pearl Harbors', '9/11s', ...
-        'Gettysburgs', 'Months of US Lung Cancer Deaths', ...
-        ['Years of US Flu Deaths: ' num2str(numFluYears) ' so far'], ...
-        ['Hiroshimas: ' num2str(numHiroshimas) ' so far'], ...
+    title('COVID-19 Deaths Comparison for the US so Far');
+    legend(['Benghazis: ' num2str(numBenghazis)], ...
+        ['Titanics: ' num2str(numTitanics)], ...
+        ['Hurricane Katrinas: ' num2str(numKatrinas)], ...
+        ['Pearl Harbors: ' num2str(numPearls)], ...
+        ['9/11s: ' num2str(numNines)], ...
+        ['Gettysburgs: ' num2str(numGettys)], ...
+        ['Months of US Lung Cancer Deaths: ' num2str(numLungs)], ...
+        ['Years of US Flu Deaths: ' num2str(numFluYears)], ...
+        ['Hiroshimas: ' num2str(numHiroshimas)], ...
         'Location', 'northwest');
     savefig([mainDir '\figs\NATIONWIDE_DEATHS_COMPARISON.fig']);
     exportgraphics(gcf, ...
