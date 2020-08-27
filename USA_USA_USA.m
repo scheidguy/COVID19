@@ -252,13 +252,11 @@ currState = 0;
 %Create 7 day averages for cases and deaths per million population
 %Have to loop through each county
 for currCounty = 1:dimensions(1)
-    %Set up a waitbar if not making new figures
-    if ~makeFigsFlag
-        if exist('wait', 'var')
-            waitbar(currCounty/dimensions(1), wait);
-        else
-            wait = waitbar(currCounty/dimensions(1));
-        end
+    %Set up a waitbar
+    if exist('wait', 'var')
+        waitbar(currCounty/dimensions(1), wait);
+    else
+        wait = waitbar(currCounty/dimensions(1));
     end
     
     %cases/deaths are both cumulative, so need to figure out per day stats
@@ -494,13 +492,11 @@ for currCounty = 1:dimensions(1)
         
         %Make figs fullsize and save figs and jpgs
         set(gcf, 'Position', get(0, 'Screensize'));
+        set(gcf, 'Visible', 'on');
         exportgraphics(gcf, ...
-            [mainDir '\jpgs\' previousState '\_STATEWIDE.jpg']);
-        savefig([mainDir '\figs\' previousState '\_STATEWIDE).fig']);
-        movefile([mainDir '\jpgs\' previousState '\_STATEWIDE.jpg'], ...
             [mainDir '\jpgs\' previousState '\(STATEWIDE).jpg']);
-        movefile([mainDir '\figs\' previousState '\_STATEWIDE.fig'], ...
-            [mainDir '\figs\' previousState '\(STATEWIDE).fig']);
+        savefig([mainDir '\figs\' previousState '\(STATEWIDE).fig']);
+
         close all;
         
         %Update beginning index for the new state
@@ -536,6 +532,7 @@ for currCounty = 1:dimensions(1)
     
     %Don't need to save a County fig for Washington DC
     if ~matches('DC', states{currCounty})
+        set(gcf, 'Visible', 'on');
         savefig([mainDir '\figs\' states{currCounty} '\' saveString]);
         exportgraphics(gcf, ...
             [mainDir '\jpgs\' states{currCounty} '\' saveString '.jpg']);
@@ -560,6 +557,7 @@ if makeFigsFlag
         ' per million'], ['Cumulative Deaths: ' ...
         num2str(deathPerMilNation) ' per million'], ...
         '7 Day Case Average', 'Location', 'northwest');
+    set(gcf, 'Visible', 'on');
     savefig([mainDir '\figs\NATIONWIDE_CASES.fig']);
     exportgraphics(gcf, [mainDir '\jpgs\NATIONWIDE_CASES.jpg']);
     
@@ -572,6 +570,7 @@ if makeFigsFlag
     legend(['COVID-19 Deaths: ' num2str(deathPerMilNation) ...
         ' per million'], '7 Day Average of Deaths', ...
         'Location', 'northwest');
+    set(gcf, 'Visible', 'on');
     savefig([mainDir '\figs\NATIONWIDE_DEATHS.fig']);
     exportgraphics(gcf, [mainDir '\jpgs\NATIONWIDE_DEATHS.jpg']);
     
@@ -610,6 +609,7 @@ if makeFigsFlag
         ['Years of US Flu Deaths: ' num2str(numFluYears)], ...
         ['Hiroshimas: ' num2str(numHiroshimas)], ...
         'Location', 'northwest');
+    set(gcf, 'Visible', 'on');
     savefig([mainDir '\figs\NATIONWIDE_DEATHS_COMPARISON.fig']);
     exportgraphics(gcf, ...
         [mainDir '\jpgs\NATIONWIDE_DEATHS_COMPARISON.jpg']);
