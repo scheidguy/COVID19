@@ -431,10 +431,12 @@ for currCounty = 1:dimensions(1)
         
         nexttile;
         grid on; hold on; box on;
-        plot((1:currDay)+offsetDays, casesPerDayStatewide(currState,:));
+        plot((1:currDay)+offsetDays, casesPerDayStatewide(currState,:), ...
+            'Color', [0.9290 0.6940 0.1250]);
         plot((1:currDay)+offsetDays, cases7dayStatewide(currState,:), ...
-            'LineWidth', 3);
-        plot(dayNumber, estimatedCases, 'LineWidth', 3);
+            'LineWidth', 4, 'Color', [0.9290 0.6940 0.1250]);
+        plot(dayNumber, estimatedCases, 'LineWidth', 4, ...
+            'Color', [0.4940 0.1840 0.5560]);
         xlabel('Days Since 2020 Began');
         ylabel('New COVID-19 Cases');
         legend(['New Confirmed Cases: ' num2str(casesPerMilStatewide) ...
@@ -447,14 +449,16 @@ for currCounty = 1:dimensions(1)
         nexttile;
         grid on; hold on; box on;
         yyaxis left;
-        plot(dayNumber, estimatedCurrentlyInfected, 'Linewidth', 3);
+        plot(dayNumber, estimatedCurrentlyInfected, 'LineWidth', 4, ...
+            'Color', [0.4940 0.1840 0.5560]);
         infectedNow = estimatedCurrentlyInfected(end);
-        ylabel('Estimated % Infected at the Time');
+        ylabel('Estimated % Infected at the Time', ...
+            'Color', [0.4940 0.1840 0.5560]);
         yyaxis right;
         plot((1:currDay)+offsetDays, deathsStatewideCumul(currState,:), ...
-            'LineWidth', 3);
+            'LineWidth', 4, 'Color', [0.8500 0.3250 0.0980]);
         xlabel('Days Since 2020 Began');
-        ylabel('# of Deaths');
+        ylabel('# of Deaths', 'Color', [0.8500 0.3250 0.0980]);
         legend(['% of Population Infected: Currently ' ...
             num2str(round(infectedNow,2)) '%'], ...
             ['Cumulative Deaths: ' num2str(deathPerMilStatewide) ...
@@ -464,17 +468,18 @@ for currCounty = 1:dimensions(1)
         nexttile;
         grid on; hold on; box on;
         xlabel('Days Since 2020 Began');
-        RTdeathsDays = dayNumber(end)-length(RTdeaths)+1 : dayNumber(end);
-        plot(RTdeathsDays, RTdeaths, 'LineWidth', 3);
         RTcasesDays = dayNumber(end)-length(RTcases)+1 : dayNumber(end);
-        plot(RTcasesDays, RTcases, 'LineWidth', 3);
+        plot(RTcasesDays, RTcases, 'LineWidth', 4, ...
+            'Color', [0.9290 0.6940 0.1250]);
+        RTdeathsDays = dayNumber(end)-length(RTdeaths)+1 : dayNumber(end);
+        plot(RTdeathsDays, RTdeaths, 'LineWidth', 4, ...
+            'Color', [0.8500 0.3250 0.0980]);
         RTcasesNow = round(RTcases(end), 2);
         RTdeathsNow = round(RTdeaths(end), 2);
         ylabel('Effective Reproduction Number (R_t)');
-        legend(['R_t Estimate from Deaths: Currently ' ...
-            num2str(RTdeathsNow)], ...
-            ['R_t Estimate from Cases: Currently ' num2str(RTcasesNow)],...
-            'Location', 'northeast');
+        legend(['R_t Estimate from Cases: Currently ' ...
+            num2str(RTcasesNow)],['R_t Estimate from Deaths: Currently '...
+            num2str(RTdeathsNow)], 'Location', 'northeast');
         xlim(xLims);
         
         nexttile;
@@ -482,9 +487,9 @@ for currCounty = 1:dimensions(1)
         theCDF = 100 * (1 - binocdf(0, 1:1000, infectedNow/100));
         firstOver90 = find(theCDF > 90, 1);
         if ~isempty(firstOver90)  %Want to plot up to 90% chance
-            plot(1:firstOver90, theCDF(1:firstOver90), 'Linewidth', 3);
+            plot(1:firstOver90, theCDF(1:firstOver90), 'LineWidth', 4);
         else
-            plot(1:1000, theCDF, 'Linewidth', 3);
+            plot(1:1000, theCDF, 'LineWidth', 4);
         end
         xlabel(['# of People Interacted With (Assumes ' ...
             num2str(round(infectedNow,2)) '% Infected)']);
@@ -517,9 +522,12 @@ for currCounty = 1:dimensions(1)
         continue
     end
     figure('Visible', 'off'); grid on; hold on;
-    plot((1:currDay)+offsetDays, casesPerDay(currCounty,:));
-    plot((1:currDay)+offsetDays, deaths(currCounty,:), 'LineWidth', 3);
-    plot((1:currDay)+offsetDays, cases7day(currCounty,:), 'LineWidth', 3);
+    plot((1:currDay)+offsetDays, casesPerDay(currCounty,:), ...
+        'Color', [0.9290 0.6940 0.1250]);
+    plot((1:currDay)+offsetDays, deaths(currCounty,:), 'LineWidth', 4, ...
+        'Color', [0.8500 0.3250 0.0980]);
+    plot((1:currDay)+offsetDays, cases7day(currCounty,:), ...
+        'LineWidth', 4, 'Color', [0.9290 0.6940 0.1250]);
     xlabel('Days Since 2020 Began');
     ylabel('New COVID-19 Cases');
     title(['COVID-19 Stats For ' counties{currCounty} ', ' ...
@@ -544,9 +552,12 @@ end
 if makeFigsFlag
     %Create national plots
     figure('Visible', 'off'); grid on; hold on;
-    plot((1:currDay)+offsetDays, sum(casesPerDay));
-    plot((1:currDay)+offsetDays, sum(deaths), 'LineWidth', 3);
-    plot((1:currDay)+offsetDays, sum(cases7day), 'LineWidth', 3);
+    plot((1:currDay)+offsetDays, sum(casesPerDay), ...
+        'Color', [0.9290 0.6940 0.1250]);
+    plot((1:currDay)+offsetDays, sum(deaths), 'LineWidth', 4, ...
+        'Color', [0.8500 0.3250 0.0980]);
+    plot((1:currDay)+offsetDays, sum(cases7day), 'LineWidth', 4, ...
+        'Color', [0.9290 0.6940 0.1250]);
     xlabel('Days Since 2020 Began');
     ylabel('New COVID-19 Cases');
     title('COVID-19 Stats for the United States of America');
@@ -562,8 +573,10 @@ if makeFigsFlag
     exportgraphics(gcf, [mainDir '\jpgs\NATIONWIDE_CASES.jpg']);
     
     figure('Visible', 'off'); grid on; hold on;
-    plot((1:currDay)+offsetDays, sum(deathsPerDay));
-    plot((1:currDay)+offsetDays, sum(deaths7day), 'LineWidth', 3);
+    plot((1:currDay)+offsetDays, sum(deathsPerDay), ...
+        'Color', [0.8500 0.3250 0.0980]);
+    plot((1:currDay)+offsetDays, sum(deaths7day), 'LineWidth', 4, ...
+        'Color', [0.8500 0.3250 0.0980]);
     xlabel('Days Since 2020 Began');
     ylabel('New COVID-19 Deaths');
     title('COVID-19 Stats for the United States of America');
