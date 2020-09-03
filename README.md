@@ -6,13 +6,17 @@ Obligatory Disclaimer: I am not an epidemiologist, or a medical professional, or
 
 
 How to Use:
+
 If you have Matlab, look in the figs folder for the raw figures. Otherwise you can look in the jpgs folder for images of the same figures. They are organized by state and there are a few nationwide plots at the bottom. I recommend starting with your home county's plot and then comparing it to the corresponding STATEWIDE plot. You may also want to compare with the national level plots, or look at the state/county level plots for locations you have friends and family, or a destination you are considering traveling to. It's definitely not necessary to read the rest of this README, but may be useful if you have questions.
 
+
 How to Interpret County Level Plots:
+
 The daily tally of new confirmed cases is shown by the skinny yellow line, but it is usually more informative to look at the 7 day average shown by the thick yellow line. This is because there are often day-of-week reporting artifacts (e.g. fewer reports on weekends). The thick red line shows the cumulative number of confirmed deaths, and the legend gives some cumulative per capita stats.
 
 
 How to Interpret STATEWIDE Plots:
+
 I spent the most time on the STATEWIDE plots because different regions can vary wildly and I couldn't find data granular enough to do some of the more interesting analysis at the county level. These are probably the most useful plots for decision making purposes. There are actually 4 subplots, described in more detail below.
 
 Upper Left: The yellow lines again show the trend of confirmed cases, similar to the county level plots. The purple line is an estimate of the true number of infections using a model developed by Youyang Gu (creator of the excellent covidprojections.com). It is a function of the number of confirmed cases and the test positivity rate (7 day averages for both). The legend has the cumulative per capita stat for confirmed cases and an estimate of what percentage of the state's population has been infected so far.
@@ -25,13 +29,21 @@ Lower Right: This curve attempts to show how the level of risk increases as the 
 
 
 How to Interpret NATIONWIDE Plots:
+
 The CASES plot shows the same information as the county level plots (see above). The DEATHS plot shows daily confirmed deaths, a 7 day average, and there is a cumulative deaths per capita stat in the legend. The COMPARISONS plot is meant to convey the gravity of the pandemic by comparing it to some other famous catastrophes/medical risks. While this is really just an exercise in multiplication, it is my opinion that humans (myself included) aren't great at understanding large numbers. This is an attempt to provide a baseline for discussion. I averaged the last 9 flu seasons to determine the comparison to flu deaths.
 
+
 Coda:
+
 I sure did type the word plot a lot. Please send along any commentary/criticism/ideas for extensions to scheidguy@gmail.com
 
+
 References:
+
 County level cases/deaths/population: usafacts.org/visualizations/coronavirus-covid-19-spread-map/
+
 Test positivity: covidtracking.com
+
 R_t based on deaths and model for estimate of true number of infections: covid19-projections.com/
+
 R_t based on cases: rt.live
